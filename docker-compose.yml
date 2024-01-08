@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  bot:
+    build:
+      context: .
+    environment:
+      - BOT_TOKEN=6872236684:AAECovYGSLLHi_Rj8V3TDhLddAfF1CNxXcA
+      - OMDB_API_KEY=aacba327
+      - KINOPOISK_API_KEY=7QRYVD6-SDE4M47-JK6G372-QHZPD10
+      - DATABASE_URL=sqlite+aiosqlite:///example.db
+    networks:
+      - bot-network
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      # Добавьте порт SSL, если необходимо
+      # - "443:443"
+    depends_on:
+      - bot
+    networks:
+      - bot-network
+
+networks:
+  bot-network:
+    driver: bridge
