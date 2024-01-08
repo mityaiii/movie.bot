@@ -37,6 +37,8 @@ class KinopoiskSearchEngine(ISearchEngine):
 
         title = data.get('name', 'N/A')
         rating = data.get('internalRating', 'N/A')
+        if rating == 'N/A':
+            data['rating']['kp']
         poster_url = data.get('poster', 'N/A')
         if poster_url != 'N/A':
             poster_url = poster_url['url']

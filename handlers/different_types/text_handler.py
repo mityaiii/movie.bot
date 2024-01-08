@@ -18,8 +18,8 @@ async def message_with_text(message: Message):
         movie_info = search_result.data
 
         text = f"""Название: {movie_info.title}
-Рейтинг IMDb: {movie_info.rating}
-Ссылка на IMDb: {movie_info.link}
+Рейтинг: {movie_info.rating}
+Ссылка на фильм: {movie_info.link}
 
 Описание: {movie_info.description}"""
 

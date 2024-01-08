@@ -17,9 +17,7 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
     ports:
-      - "80:80"
-      # Добавьте порт SSL, если необходимо
-      # - "443:443"
+      - "8080:80"
     depends_on:
       - bot
     networks:
