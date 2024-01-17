@@ -41,6 +41,5 @@ if __name__ == '__main__':
         rotation="30 KB",
         compression="zip",
     )
-    load_dotenv()
 
     asyncio.run(main())
