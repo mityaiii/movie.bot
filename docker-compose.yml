@@ -9,9 +9,3 @@ services:
       - OMDB_API_KEY=aacba327
       - KINOPOISK_API_KEY=7QRYVD6-SDE4M47-JK6G372-QHZPD10
       - DATABASE_URL=sqlite+aiosqlite:///example.db
-    networks:
-      - bot-network
-
-networks:
-  bot-network:
-    driver: bridge
