@@ -12,17 +12,6 @@ services:
     networks:
       - bot-network
 
-  nginx:
-    image: nginx:latest
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-    ports:
-      - "8080:80"
-    depends_on:
-      - bot
-    networks:
-      - bot-network
-
 networks:
   bot-network:
     driver: bridge

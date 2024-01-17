@@ -13,11 +13,13 @@ from core.entities.omdb_search_engine import OmdbSearchEngine
 from core.entities.i_search_engine import ISearchEngine
 
 from database.database import Database
+from core.entities.movie_link_search_engine import MovieLinkSearchEngine
 
 
 class FilmSearchEngine():
     def __init__(self) -> None:
         self.database = Database()
+        self.movie_link_search_engine = MovieLinkSearchEngine()
 
     async def __has_russian_letters(self, text: str) -> bool:
         for char in text:
@@ -27,9 +29,9 @@ class FilmSearchEngine():
 
     async def __create_class_based_on_letters(self, title) -> ISearchEngine:
         if await self.__has_russian_letters(title):
-            return KinopoiskSearchEngine(title)
+            return KinopoiskSearchEngine(title, self.movie_link_search_engine)
         else:
-            return OmdbSearchEngine(title)
+            return OmdbSearchEngine(title, self.movie_link_search_engine)
 
     async def search_movie(self, user_id: int, title: str) -> Response:
         search_engine: ISearchEngine = await self.__create_class_based_on_letters(title=title)
@@ -95,7 +97,6 @@ class FilmSearchEngine():
             try:
                 film = await self.database.add_film(film=film)
             except Exception as ex:
-                print(ex)
                 return ErrorResponse(error_message=f"Error: problems with server")
 
         return SuccessResponse(data=film)

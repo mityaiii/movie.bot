@@ -1,6 +1,7 @@
 import asyncio
 import os
 
+from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 from aiogram.enums.parse_mode import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -41,5 +42,6 @@ if __name__ == '__main__':
         rotation="30 KB",
         compression="zip",
     )
+    load_dotenv()
 
     asyncio.run(main())

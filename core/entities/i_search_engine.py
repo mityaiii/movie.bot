@@ -7,5 +7,5 @@ if typing.TYPE_CHECKING:
 
 class ISearchEngine(ABC):
     @abstractmethod
-    async def find_film(self) -> "Response":
+    async def find_film(self, title) -> "Response":
         pass

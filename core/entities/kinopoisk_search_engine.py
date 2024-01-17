@@ -10,13 +10,15 @@ from core.models.success_response import SuccessResponse
 
 if typing.TYPE_CHECKING:
     from core.models.response import Response
+    from core.entities.movie_link_search_engine import MovieLinkSearchEngine
 
 KINOPOISK_API_KEY = os.environ.get('KINOPOISK_API_KEY')
 
 
 class KinopoiskSearchEngine(ISearchEngine):
-    def __init__(self, title) -> None:
+    def __init__(self, title: str, movie_link_search_engine: "MovieLinkSearchEngine") -> None:
         self.title = title
+        self.movie_link_search_engine = movie_link_search_engine
 
     async def find_film(self) -> "Response":
         headers = {'X-API-KEY': KINOPOISK_API_KEY}
@@ -42,14 +44,20 @@ class KinopoiskSearchEngine(ISearchEngine):
         poster_url = data.get('poster', 'N/A')
         if poster_url != 'N/A':
             poster_url = poster_url['url']
-        kp_link = f"https://www.kinopoisk.ru/film/{data.get('id', 'N/A')}/"
+        
+        genres = data.get('genres', 'N/A')
+        if any(item["name"] == "аниме" for item in genres):
+            link = await self.movie_link_search_engine.find_movie(title, True)
+        else:
+            link = await self.movie_link_search_engine.find_movie(title)
+        # kp_link = f"https://www.kinopoisk.ru/film/{data.get('id', 'N/A')}/"
         description = data.get('description', 'N/A')
 
         film = Film(
             title=title,
             rating=rating,
             poster=poster_url,
-            link=kp_link,
+            link=link,
             description=description,
         )
 
